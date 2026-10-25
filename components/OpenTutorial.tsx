@@ -37,7 +37,7 @@ export default function OpenTutorial() {
   return (
     <div className="tut" role="group" aria-roledescription="carousel" aria-label="How to open Vesper the first time">
       <div className="tut-stage">
-        <div className="tut-shot" style={{ width: `min(100%, ${s.show}px)`, aspectRatio: `${s.w} / ${s.h}` }} key={i}>
+        <div className="tut-shot" style={{ width: `min(100%, ${s.show}px, calc((min(400px, 46svh) - 28px) * ${(s.w / s.h).toFixed(4)}))`, aspectRatio: `${s.w} / ${s.h}` }} key={i}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={s.img} width={s.w} height={s.h} alt={`Step ${i + 1}: ${s.title}`} />
           {s.drag && <img className="tut-ghost" src="/tutorial/icon.webp" width={108} height={108} alt="" aria-hidden="true" />}
