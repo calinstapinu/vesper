@@ -257,6 +257,7 @@ export default function Notch({ expanded = true, tab = "timeline", onTab, forceS
                             ))}
                           </div>
                           {X(KILL.b) > 0 && X(KILL.a) < 100 && <button type="button" className={`rail ${sel === "kill" ? "on" : ""}`} style={{ left: `${Math.max(0, X(KILL.a))}%`, width: `${Math.min(100, X(KILL.b)) - Math.max(0, X(KILL.a))}%` }} aria-label="Kill zone" onClick={() => { setSel(sel === "kill" ? null : "kill"); touch(); }} />}
+                          {X(KILL.b) > 0 && X(KILL.a) < 100 && <button type="button" className={`rail-lab ${sel === "kill" ? "on" : ""}`} style={{ left: `${(Math.max(0, X(KILL.a)) + Math.min(100, X(KILL.b))) / 2}%` }} tabIndex={-1} aria-hidden="true" onClick={() => { setSel(sel === "kill" ? null : "kill"); touch(); }}>KZ</button>}
                           <div className="tl-bar">
                             {pieces.map((p, i) => X(p.b) > 0 && X(p.a) < 100 && (
                               <button key={i} type="button" className={`pc ${p.k} ${sel === p.s ? "on" : ""}`} style={{ left: `${X(p.a)}%`, width: `calc(${X(p.b) - X(p.a)}% - 1px)` }} aria-label={p.k} onClick={() => { setSel(sel === p.s ? null : p.s); touch(); }} />
