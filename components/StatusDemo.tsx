@@ -16,7 +16,7 @@ export default function StatusDemo() {
   const [state, setState] = useState<IState>("session");
   return (
     <>
-      <Script src="/aloha-mascots.js" strategy="afterInteractive" />
+      <Script src="/aloha-mascots.js" strategy="lazyOnload" />
       <div className="status-stage">
         <NotchFit maxScale={1.7}>
           <Notch expanded={false} forceState={state} interactive={false} />

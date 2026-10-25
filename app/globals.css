@@ -160,7 +160,7 @@ h2 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.0
   .pin-in { position: sticky; top: 0; height: 100vh; display: grid; align-items: center; }
 }
 .demo { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(28px, 5vw, 72px); align-items: center; padding-top: clamp(80px, 12vw, 160px); padding-bottom: 40px; width: 100%; }
-@media (min-width: 1000px) and (min-height: 700px) { .demo { padding-top: 70px; padding-bottom: 20px; } }
+@media (min-width: 1000px) and (min-height: 700px) { .demo { padding-top: 70px; padding-bottom: 20px; } .demo-text { min-height: 560px; } } /* the tallest tab text, so the walk through the tabs never moves the panel */
 @media (max-width: 999px) { .demo { grid-template-columns: 1fr; } }
 .demo-text .feat { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 10px; }
 .fbtn { position: relative; width: 100%; text-align: left; display: grid; gap: 4px; padding: 16px 20px; border: 0; border-radius: 16px; background: var(--card); color: var(--ink); font: inherit; cursor: pointer; overflow: hidden; isolation: isolate;
@@ -175,6 +175,7 @@ h2 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.0
 .fbtn.on::before { background: conic-gradient(from 200deg, var(--n1), var(--n4), var(--n3), var(--n2), var(--n1)); }
 .fbtn .fill { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; transform-origin: 0 50%; background: linear-gradient(90deg, var(--n1), var(--n4)); }
 .fbtn:not(.on) span { display: none; }
+.fbtn:not(.on) .fill, .feat[data-manual] .fill { display: none; }
 @media (max-width: 999px) { .fbtn:not(.on) span { display: none; } }
 .demo-stage { display: grid; justify-items: center; gap: 12px; min-width: 0; }
 .app-wrap { position: relative; width: min(100%, 860px); border-radius: 0 0 34px 34px; padding: 0; isolation: isolate; }
@@ -285,3 +286,6 @@ h2 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.0
 }
 .nav .brand { gap: 14px; font-size: 26px; font-weight: 700; } .nav .brand img { width: 48px; height: 48px; }
 @media (max-width: 640px) { .nav .brand { gap: 10px; font-size: 22px; } .nav .brand img { width: 38px; height: 38px; } }
+
+/* touch: 44px tap targets without moving anything */
+@media (pointer: coarse) { .nav .brand { min-height: 44px; } .foot a { display: inline-block; padding: 14px 8px; margin: -14px -8px; } }

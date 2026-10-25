@@ -14,21 +14,27 @@ const FEATURES: { id: Tab; name: string; text: string }[] = [
 // until the visitor touches the panel, then the tabs are theirs.
 export default function DemoSection() {
   const [tab, setTab] = useState<Tab>("timeline");
-  const [prog, setProg] = useState(0);
+  const fills = useRef<(HTMLElement | null)[]>([]);
+  const list = useRef<HTMLUListElement>(null);
   const manual = useRef(false);
   const wrap = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { manual.current = true; return; }
-    let raf = 0;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) { manual.current = true; list.current?.setAttribute("data-manual", ""); return; }
+    // the pinned, scroll-driven walk through the tabs only exists on large screens; elsewhere the tabs are just tabs
+    const pinned = matchMedia("(min-width: 1000px) and (min-height: 700px)");
+    let raf = 0, cur = -1;
     const run = () => {
       raf = 0;
-      const el = wrap.current!;
-      if (getComputedStyle(el).position !== "relative" || el.dataset.pin !== "1") return;
-      const r = el.getBoundingClientRect();
+      if (!pinned.matches || manual.current) return;
+      const r = wrap.current!.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
       const p = Math.max(0, Math.min(0.999, -r.top / Math.max(1, r.height - innerHeight)));
-      setProg(p);
-      if (!manual.current) setTab(FEATURES[Math.floor(p * FEATURES.length)].id);
+      const i = Math.floor(p * FEATURES.length);
+      // the progress line moves without re-rendering anything; the tab only changes when the step does
+      const f = fills.current[i];
+      if (f) f.style.transform = `scaleX(${Math.min(1, Math.max(0, p * FEATURES.length - i)).toFixed(3)})`;
+      if (i !== cur) { cur = i; setTab(FEATURES[i].id); }
     };
     const on = () => { if (!raf) raf = requestAnimationFrame(run); };
     addEventListener("scroll", on, { passive: true });
@@ -36,9 +42,9 @@ export default function DemoSection() {
     return () => { cancelAnimationFrame(raf); removeEventListener("scroll", on); };
   }, []);
 
-  const user = () => { manual.current = true; };
-  const pick = (t: Tab) => { manual.current = true; setTab(t); };
-  const active = FEATURES.findIndex((f) => f.id === tab);
+  const stop = () => { manual.current = true; list.current?.setAttribute("data-manual", ""); };
+  const user = stop;
+  const pick = (t: Tab) => { stop(); setTab(t); };
 
   return (
     <div className="pin" ref={wrap} data-pin="1">
@@ -47,13 +53,13 @@ export default function DemoSection() {
           <div className="demo-text">
             <h2 aria-label="Play with it.">Play with it.</h2>
             <p>This is the app&apos;s own panel, with dummy data. Tap anything. Settings and editing stay in the app.</p>
-            <ul className="feat">
+            <ul className="feat" ref={list}>
               {FEATURES.map((f, i) => (
                 <li key={f.id}>
                   <button type="button" data-spot className={`fbtn ${f.id === tab ? "on" : ""}`} onClick={() => pick(f.id)} aria-pressed={f.id === tab}>
                     <b>{f.name}</b>
                     <span>{f.text}</span>
-                    {!manual.current && i === active && <i className="fill" style={{ transform: `scaleX(${Math.min(1, Math.max(0, prog * FEATURES.length - i))})` }} />}
+                    <i className="fill" ref={(n) => { fills.current[i] = n; }} style={{ transform: "scaleX(0)" }} />
                   </button>
                 </li>
               ))}
