@@ -8,12 +8,13 @@ import Reveal from "@/components/Reveal";
 import ScrollFX from "@/components/ScrollFX";
 import Words from "@/components/Words";
 
-const GET = process.env.NEXT_PUBLIC_DOWNLOAD_URL || "#get";
+const GET = process.env.NEXT_PUBLIC_DOWNLOAD_URL || "/download/Vesper.dmg";
 
 const FAQ = [
   ["Does Vesper give signals or predictions?", "No. Vesper shows timing, news, your own checklist and position size. It has no signals, no predictions and no price feed."],
   ["Which instruments does the size calculator support?", "NQ, MNQ, ES and MES today. The values on this page are illustrative."],
   ["Which Macs does it run on?", "Vesper lives in the notch, so it is built for MacBooks with a notch. Full system requirements will be listed with the beta download."],
+  ["macOS says it can't verify Vesper. What do I do?", "The beta is not notarized by Apple yet, so macOS blocks the first launch. Open Vesper once, click Done, then go to System Settings > Privacy & Security and click Open Anyway. You only do this once."],
   ["What does it cost?", "The beta is free. Pricing after the beta has not been announced."],
   ["Is this financial advice?", "No. Vesper is a timing and discipline tool. Not financial advice."],
 ];
@@ -29,7 +30,7 @@ export default function Home() {
           <span>Vesper</span>
         </a>
         <nav aria-label="Primary">
-          <a className="pill" href={GET} data-magnet>Free beta for Mac</a>
+          <a className="pill" href={GET} download data-magnet>Free beta for Mac</a>
         </nav>
       </header>
 
@@ -42,7 +43,7 @@ export default function Home() {
             <Words as="h1" text="Know when to trade and when not to." />
             <p className="sub">Vesper turns your MacBook notch into a live trading cockpit. Your window, the news, your rules and your size, right where your eyes already are.</p>
             <div className="actions">
-              <a className="cta" href={GET} data-magnet>Free beta for Mac</a>
+              <a className="cta" href={GET} download data-magnet>Free beta for Mac</a>
               <a className="ghost" href="#how" data-magnet>See how it works</a>
             </div>
             <p className="trust">No signals &nbsp;·&nbsp; No predictions &nbsp;·&nbsp; No price feed</p>
@@ -107,7 +108,7 @@ export default function Home() {
             <img src="/mascot/checklist_done.svg" alt="" width={120} height={120} />
             <Words text="Get the free beta." />
             <p>Know when to trade and when not to, right at the notch.</p>
-            <a className="cta" href={GET} data-magnet>Free beta for Mac</a>
+            <a className="cta" href={GET} download data-magnet>Free beta for Mac</a>
           </Reveal>
         </section>
       </main>
