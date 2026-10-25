@@ -1,3 +1,4 @@
+import { guard } from "@/lib/guard";
 import { q } from "@/lib/db";
 import { type Device, TOKEN_HOURS, TRIAL_DAYS, entitlement, limited, normalizeEmail, signToken, validDevice, validEmail } from "@/lib/license";
 
@@ -8,7 +9,7 @@ const json = (body: unknown, status = 200) => Response.json(body, { status, head
 
 // The app calls this at launch and every few hours: it registers the Mac on first contact (starting the one-time trial),
 // applies an activation key when one is sent, and answers with the current status and a short-lived signed token.
-export async function POST(req: Request) {
+async function handle(req: Request) {
   if (await limited(req, "session", 60, 10)) return json({ error: "slow_down" }, 429);
   const b = await req.json().catch(() => null);
   const email = normalizeEmail(b?.email);
@@ -52,3 +53,5 @@ export async function POST(req: Request) {
   }
   return json({ status: ent.status, ends: ent.endsMs, keyError });
 }
+
+export const POST = guard(handle);
