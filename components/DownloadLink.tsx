@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import OpenTutorial from "./OpenTutorial";
 
 const DMG = "/download/Vesper.dmg";
 
@@ -49,7 +50,7 @@ export default function DownloadLink({ className, children }: { className?: stri
       <a className={className} href={DMG} onClick={show} data-magnet>{children}</a>
       {open && (
         <div className="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
-          <div className="gate-box">
+          <div className={`gate-box${phase === "done" ? " wide" : ""}`}>
             <button className="gate-x" type="button" aria-label="Close" onClick={() => setOpen(false)}>×</button>
             {phase === "phone" ? (
               <>
@@ -59,8 +60,9 @@ export default function DownloadLink({ className, children }: { className?: stri
             ) : phase === "done" ? (
               <>
                 <h2 id="gate-t">Your download has started</h2>
-                <p>Open the DMG, drag Vesper to Applications, and open it. Vesper will ask for this same email once, to start your 7-day beta.</p>
-                <p className="gate-note">If macOS blocks the first launch, see the FAQ below: System Settings &gt; Privacy &amp; Security &gt; Open Anyway.</p>
+                <p>Open the DMG and drag Vesper to Applications. macOS will warn you the first time; this takes about 30 seconds, once.</p>
+                <OpenTutorial />
+                <p className="gate-note">Vesper will ask for this same email once, to start your 7-day beta.</p>
                 <button className="gate-go" type="button" onClick={() => setOpen(false)}>Done</button>
               </>
             ) : (
