@@ -1,30 +1,41 @@
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { basicOk } from "@/lib/adminAuth";
 import { q } from "@/lib/db";
 import { makeKey } from "@/lib/license";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Vesper admin", robots: { index: false, follow: false } };
 
+// every action checks the admin password itself: the middleware is not the only gate
+async function assertAdmin() {
+  if (!basicOk((await headers()).get("authorization"), process.env.ADMIN_PASSWORD)) throw new Error("unauthorized");
+}
+
 async function genKey(f: FormData) {
   "use server";
+  await assertAdmin();
   const days = parseInt(String(f.get("days") ?? ""), 10);
   await q("INSERT INTO license_keys (code, days, note) VALUES ($1, $2, $3)", [makeKey(), Number.isFinite(days) && days > 0 ? days : null, String(f.get("note") ?? "").slice(0, 200)]);
   revalidatePath("/admin");
 }
 async function extend(f: FormData) {
   "use server";
+  await assertAdmin();
   const days = Math.max(1, Math.min(365, parseInt(String(f.get("days") ?? "7"), 10) || 7));
   await q("UPDATE devices SET trial_ends_at = GREATEST(now(), trial_ends_at) + ($1 || ' days')::interval WHERE id = $2", [String(days), Number(f.get("id"))]);
   revalidatePath("/admin");
 }
 async function setStatus(f: FormData) {
   "use server";
+  await assertAdmin();
   const status = f.get("status") === "revoked" ? "revoked" : "active";
   await q("UPDATE devices SET status = $1 WHERE id = $2", [status, Number(f.get("id"))]);
   revalidatePath("/admin");
 }
 async function revokeKey(f: FormData) {
   "use server";
+  await assertAdmin();
   await q("UPDATE license_keys SET revoked = NOT revoked WHERE code = $1", [String(f.get("code"))]);
   revalidatePath("/admin");
 }
