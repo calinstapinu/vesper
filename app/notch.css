@@ -81,7 +81,10 @@
 .mk svg { transform: scale(.9); }
 .rail { position: absolute; z-index: 2; top: calc(var(--u) * 42); height: calc(var(--u) * 4); border: 0; padding: 0; border-radius: 99px; background: var(--pk); cursor: pointer; transition: left .9s linear, width .9s linear, box-shadow .15s; }
 .rail::after { content: ""; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
-.rail-lab { position: absolute; z-index: 2; top: calc(var(--u) * 28); width: calc(var(--u) * 30); margin-left: calc(var(--u) * -15); padding: 0; border: 0; background: transparent; color: var(--pk); font-size: calc(var(--u) * 10); font-weight: 700; line-height: 1; text-align: center; cursor: pointer; transition: left .9s linear, color .15s; }
+.rail-lab { position: absolute; z-index: 2; top: calc(var(--u) * 24); width: calc(var(--u) * 30); margin-left: calc(var(--u) * -15); padding: 0; border: 0; background: transparent; color: var(--pk); font-size: calc(var(--u) * 10); font-weight: 700; line-height: 1; text-align: center; cursor: pointer; transition: left .9s linear, color .15s; }
+.rail-lab, .rail-lab:focus, .rail-lab:focus-visible { outline: 0; box-shadow: none; }
+.kz-edge { position: absolute; z-index: 3; top: calc(var(--u) * 50); height: calc(var(--u) * 28); border-left: 1.5px solid rgba(255,255,255,.85); border-right: 1.5px solid rgba(255,255,255,.85); pointer-events: none; transition: left .9s linear, width .9s linear, border-color .15s; }
+.kz-edge.on { border-color: #fff; }
 .rail-lab.on { color: #fff; }
 .rail.on { box-shadow: 0 0 0 1.5px #fff; }
 .tl-bar { position: absolute; left: 0; right: 0; top: calc(var(--u) * 50); height: calc(var(--u) * 28); overflow: hidden; border-radius: 4px; }
