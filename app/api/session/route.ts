@@ -31,15 +31,19 @@ async function handle(req: Request) {
 
   let keyError: string | null = null;
   const code = typeof b.key === "string" ? b.key.trim().toUpperCase() : "";
-  if (code && dev.license_key !== code) {
+  if (code) {
     const [k] = await q<{ code: string; days: number | null; used_by: number | null; revoked: boolean }>("SELECT * FROM license_keys WHERE code = $1", [code]);
     if (!k || k.revoked) keyError = "invalid_key";
     else if (k.used_by && k.used_by !== dev.id) keyError = "key_in_use";
     else {
-      await q("UPDATE license_keys SET used_by = $1, used_at = COALESCE(used_at, now()) WHERE code = $2", [dev.id, code]);
-      [dev] = await q<Device>(
-        "UPDATE devices SET license_key = $1, license_ends_at = CASE WHEN $2::int IS NULL THEN NULL ELSE now() + ($2::int || ' days')::interval END WHERE id = $3 RETURNING *",
-        [code, k.days, dev.id]);
+      if (dev.license_key !== code) {
+        await q("UPDATE license_keys SET used_by = $1, used_at = COALESCE(used_at, now()) WHERE code = $2", [dev.id, code]);
+        [dev] = await q<Device>(
+          "UPDATE devices SET license_key = $1, license_ends_at = CASE WHEN $2::int IS NULL THEN NULL ELSE now() + ($2::int || ' days')::interval END WHERE id = $3 RETURNING *",
+          [code, k.days, dev.id]);
+      }
+      // a valid key issued by the admin is a new authorization: it lifts an earlier revoke of this Mac
+      if (dev.status === "revoked") [dev] = await q<Device>("UPDATE devices SET status = 'active' WHERE id = $1 RETURNING *", [dev.id]);
     }
   }
 
