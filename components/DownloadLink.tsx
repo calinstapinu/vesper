@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import OpenTutorial from "./OpenTutorial";
 
 const DMG = "/download/Vesper.dmg";
@@ -48,7 +49,7 @@ export default function DownloadLink({ className, children }: { className?: stri
   return (
     <>
       <a className={className} href={DMG} onClick={show} data-magnet>{children}</a>
-      {open && (
+      {open && createPortal(
         <div className="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
           <div className={`gate-box${phase === "done" ? " wide" : ""}`}>
             <button className="gate-x" type="button" aria-label="Close" onClick={() => setOpen(false)}>×</button>
@@ -78,7 +79,8 @@ export default function DownloadLink({ className, children }: { className?: stri
               </form>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
