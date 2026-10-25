@@ -13,7 +13,7 @@ export type Device = {
 
 /** The PEM as pasted into an env var can come with real newlines, literal \n, or spaces instead of line breaks: rebuild it from the base64 body. */
 const privateKey = () => {
-  const raw = process.env.LICENSE_PRIVATE_KEY;
+  const raw = process.env.LICENSE_PRIVATE_KEY ?? process.env.LICENCE_PRIVATE_KEY; // accepts the UK spelling too
   if (!raw) throw new Error("LICENSE_PRIVATE_KEY is not set");
   const body = raw.replace(/\\n/g, "\n").replace(/-----[A-Z ]+-----/g, "").replace(/[^A-Za-z0-9+/=]/g, "");
   const pem = `-----BEGIN PRIVATE KEY-----\n${body.match(/.{1,64}/g)!.join("\n")}\n-----END PRIVATE KEY-----\n`;
