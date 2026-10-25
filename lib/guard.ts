@@ -6,7 +6,7 @@ export function guard(handler: (req: Request) => Promise<Response>) {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.error("route failed:", msg);
-      const code = /DATABASE_URL/.test(msg) ? "db_not_configured" : /LICENSE_PRIVATE_KEY|PEM|DECODER|asn1|key/i.test(msg) ? "key_problem"
+      const code = /DATABASE_URL/.test(msg) ? "db_not_configured" : /LICENSE_PRIVATE_KEY|PEM|DECODER|asn1|private key/i.test(msg) ? "key_problem"
         : /relation|syntax|column|permission|password|connect|fetch|ECONN|ENOTFOUND|neon/i.test(msg) ? "db_error" : "server_error";
       return Response.json({ error: code }, { status: 500, headers: { "Cache-Control": "no-store" } });
     }
