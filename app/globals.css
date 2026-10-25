@@ -289,3 +289,32 @@ h2 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -.0
 
 /* touch: 44px tap targets without moving anything */
 @media (pointer: coarse) { .nav .brand { min-height: 44px; } .foot a { display: inline-block; padding: 14px 8px; margin: -14px -8px; } }
+
+/* download gate (email before the beta download) */
+.gate { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 16px; background: rgba(0,0,0,.72); }
+.gate-box { position: relative; width: min(100%, 440px); max-height: calc(100svh - 32px); overflow: auto; background: #0e1016; color: var(--ink, #fff); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 28px 26px 24px; text-align: left; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+.gate-box h2 { margin: 0 0 10px; font-size: 24px; letter-spacing: -.02em; }
+.gate-box p { margin: 0 0 14px; color: #b9bcc8; font-size: 15px; line-height: 1.5; }
+.gate-box input[type="email"] { width: 100%; box-sizing: border-box; font: inherit; font-size: 16px; padding: 13px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.18); background: #07080c; color: #fff; }
+.gate-box input[type="email"]:focus { outline: 2px solid #8dffc4; outline-offset: 1px; }
+.gate-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.gate-opt { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0 4px; font-size: 14px; color: #b9bcc8; }
+.gate-opt input { margin-top: 3px; }
+.gate-err { color: #ff8a80 !important; margin: 10px 0 0 !important; }
+.gate-note { font-size: 13px !important; color: #8c8fa0 !important; margin: 12px 0 0 !important; }
+.gate-go { width: 100%; margin-top: 14px; padding: 14px; border: 0; border-radius: 999px; background: #fff; color: #000; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer; min-height: 48px; }
+.gate-go:disabled { opacity: .6; cursor: default; }
+.gate-x { position: absolute; top: 8px; right: 10px; width: 44px; height: 44px; border: 0; background: transparent; color: #9a9aa8; font-size: 28px; line-height: 1; cursor: pointer; }
+
+/* feedback page */
+.fb-page { max-width: 560px; margin: 0 auto; padding: 56px var(--pad, 20px) 80px; }
+.fb-page h1 { font-size: clamp(30px, 6vw, 44px); letter-spacing: -.03em; margin: 18px 0 12px; }
+.fb-page p { color: var(--dim); }
+.fb-back { color: var(--dim); text-decoration: none; }
+.fb { display: grid; gap: 16px; margin-top: 24px; }
+.fb label { display: grid; gap: 8px; color: var(--dim); font-size: 15px; }
+.fb input[type="email"], .fb textarea { font: inherit; font-size: 16px; color: #fff; background: #08090c; border: 1px solid rgba(255,255,255,.16); border-radius: 12px; padding: 13px 14px; width: 100%; box-sizing: border-box; }
+.fb input:focus, .fb textarea:focus { outline: 2px solid #8dffc4; outline-offset: 1px; }
+.fb button { padding: 14px; border: 0; border-radius: 999px; background: #fff; color: #000; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer; min-height: 48px; }
+.fb button:disabled { opacity: .6; }
+.fb-ok { font-size: 20px; color: #8dffc4 !important; margin-top: 24px; }
