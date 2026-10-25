@@ -55,7 +55,7 @@ function Menu({ open, children, w }: { open: boolean; children: React.ReactNode;
 
 type Props = { expanded?: boolean; tab?: Tab; onTab?: (t: Tab) => void; forceState?: IState; interactive?: boolean; act?: Act; onUser?: () => void; name?: string };
 
-export default function Notch({ expanded = true, tab = "timeline", onTab, forceState, interactive = true, act = null, onUser, name = "Alex" }: Props) {
+export default function Notch({ expanded = true, tab = "timeline", onTab, forceState, interactive = true, act = null, onUser, name = "Trader" }: Props) {
   const [sec, setSec] = useState(0);
   const [zi, setZi] = useState(1);
   const [sel, setSel] = useState<Sel>(null);
