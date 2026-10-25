@@ -33,6 +33,16 @@ async function setStatus(f: FormData) {
   await q("UPDATE devices SET status = $1 WHERE id = $2", [status, Number(f.get("id"))]);
   revalidatePath("/admin");
 }
+async function deleteUser(f: FormData) {
+  "use server";
+  await assertAdmin();
+  const email = String(f.get("email") ?? "").toLowerCase();
+  await q("UPDATE license_keys SET used_by = NULL WHERE used_by IN (SELECT d.id FROM devices d JOIN users u ON u.id = d.user_id WHERE u.email = $1)", [email]);
+  await q("DELETE FROM devices WHERE user_id IN (SELECT id FROM users WHERE email = $1)", [email]);
+  await q("DELETE FROM feedback WHERE email = $1", [email]);
+  await q("DELETE FROM users WHERE email = $1", [email]);
+  revalidatePath("/admin");
+}
 async function revokeKey(f: FormData) {
   "use server";
   await assertAdmin();
@@ -96,8 +106,8 @@ export default async function Admin({ searchParams }: { searchParams: Promise<{ 
         <table><tbody>{feedback.map((f) => <tr key={f.id}><td className="mut" style={{ whiteSpace: "nowrap" }}>{fmt(f.created_at)}</td><td>{f.email ?? "-"}</td><td style={{ whiteSpace: "pre-wrap" }}>{f.message}</td></tr>)}</tbody></table>
 
         <h2>Users</h2>
-        <table><thead><tr><th>Email</th><th>Joined</th><th>Source</th><th>Wants launch email</th></tr></thead><tbody>
-          {users.map((u) => <tr key={u.id}><td>{u.email}</td><td>{fmt(u.created_at)}</td><td>{u.source}</td><td>{u.marketing_opt_in ? "yes" : "no"}</td></tr>)}
+        <table><thead><tr><th>Email</th><th>Joined</th><th>Source</th><th>Wants launch email</th><th /></tr></thead><tbody>
+          {users.map((u) => <tr key={u.id}><td>{u.email}</td><td>{fmt(u.created_at)}</td><td>{u.source}</td><td>{u.marketing_opt_in ? "yes" : "no"}</td><td><form action={deleteUser}><input type="hidden" name="email" value={u.email} /><button>Delete user</button></form></td></tr>)}
         </tbody></table>
       </div>
     </main>
