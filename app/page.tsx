@@ -12,7 +12,7 @@ import DownloadLink from "@/components/DownloadLink";
 
 const FAQ = [
   ["Does Vesper give signals or predictions?", "No. Vesper shows timing, news, your own checklist and position size. It has no signals, no predictions and no price feed."],
-  ["Which instruments does the size calculator support?", "NQ, MNQ, ES and MES today. The values on this page are illustrative."],
+  ["Which instruments does the size calculator support?", "Index futures (NQ, MNQ, ES, MES, YM, MYM, RTY, M2K), index CFDs (NAS100, US30, SPX500, GER40) and gold (XAUUSD CFD, GC, MGC). CFD contract sizes differ by broker, so every value can be edited, and you can add your own instruments. The values on this page are illustrative."],
   ["Which Macs does it run on?", "Vesper lives in the notch, so it is built for MacBooks with a notch. Full system requirements will be listed with the beta download."],
   ["macOS says it can't verify Vesper. What do I do?", "The beta is not notarized by Apple yet, so macOS blocks the first launch. Open Vesper once, click Done, then go to System Settings > Privacy & Security and click Open Anyway. You only do this once."],
   ["What does it cost?", "The beta is free for 7 days. After that you need an activation key from us. Pricing after the beta has not been announced."],
